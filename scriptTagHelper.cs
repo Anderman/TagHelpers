@@ -1,36 +1,20 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
 namespace DBC.Helpers
 {
-    [TargetElement("script", Attributes = "asp-fallback-src")]
-    public class ScriptTagHelper : TagHelper
+    [TargetElement("input", Attributes = "asp-for")]
+    public class InputTagHelper : TagHelper
     {
-        [HtmlAttributeName("asp-fallback-src")]
-        public string FallbackSrc { get; set; }
+        [HtmlAttributeName("asp-for")]
+        public ModelExpression For { get; set; }
 
-        [HtmlAttributeName("src")]
-        public string Src { get; set; }
-
-        [Activate]
-        protected internal IHostingEnvironment HostingEnvironment { get; set; }
-
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var path = HostingEnvironment.MapPath(FallbackSrc.TrimStart('/'));
-            if (!File.Exists(path))
-            {
-                using (var webClient = new WebClient())
-                {
-                    var file = await webClient.DownloadStringTaskAsync(new Uri(Src));
-                    File.WriteAllText(path, file);
-                }
-            }
+            if (!context.AllAttributes.ContainsKey("placeholder"))
+                output.Attributes.Add("placeholder", For?.Metadata?.DisplayName);
+            return Task.FromResult(0);
         }
     }
 }
