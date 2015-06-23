@@ -22,13 +22,17 @@ namespace DBC.Helpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var path = HostingEnvironment.MapPath(FallbackSrc.TrimStart('/'));
-            if (!File.Exists(path))
+            if (HostingEnvironment.EnvironmentName == "Development")
             {
-                using (var webClient = new WebClient())
+                var path = HostingEnvironment.MapPath(FallbackSrc.TrimStart('/'));
+                if (!File.Exists(path))
                 {
-                    var file = await webClient.DownloadStringTaskAsync(new Uri(Src));
-                    File.WriteAllText(path, file);
+                    using (var webClient = new WebClient())
+                    {
+                        var file = await webClient.DownloadStringTaskAsync(new Uri(Src));
+                        Directory.CreateDirectory(Path.GetDirectoryName(path));
+                        File.WriteAllText(path, file);
+                    }
                 }
             }
         }
