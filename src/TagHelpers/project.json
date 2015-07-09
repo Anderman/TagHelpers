@@ -1,0 +1,21 @@
+﻿{
+    "version": "1.0.0-*",
+    "description": "TagHelpers",
+    "authors": [ "Anderman" ],
+    "tags": [ "" ],
+    "projectUrl": "https://Github.com/Anderman/TagHelpers",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "Microsoft.AspNet.Razor.Runtime": "4.0.0-beta5",
+        "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-beta5",
+        "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta5",
+        "Microsoft.AspNet.Mvc": "6.0.0-beta5",
+        "Microsoft.Net.Http": "2.2.22"
+    },
+
+    "frameworks": {
+        "dnx451": { }
+
+    }
+}
