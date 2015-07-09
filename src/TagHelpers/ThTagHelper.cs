@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
-namespace TagHelpers
+namespace Anderman.TagHelpers
 {
     [TargetElement("th", Attributes = "asp-for")]
     public class thTagHelper : TagHelper

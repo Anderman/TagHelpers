@@ -10,7 +10,7 @@ using Microsoft.AspNet.Mvc.TagHelpers;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 using static System.IO.Path;
 
-namespace TagHelpers
+namespace Anderman.TagHelpers
 {
     [TargetElement("link", Attributes = "asp-fallback-href")]
     [TargetElement("link", Attributes = "asp-copy-src-to-fallback")]

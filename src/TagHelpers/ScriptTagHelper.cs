@@ -7,7 +7,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc.TagHelpers;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
-namespace TagHelpers
+namespace Anderman.TagHelpers
 {
     [TargetElement("script", Attributes = "asp-fallback-src")]
     [TargetElement("script", Attributes = "asp-copy-src-to-fallback")]
