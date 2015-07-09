@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
-namespace DBC.Helpers
+namespace TagHelpers
 {
     [TargetElement("input", Attributes = "asp-for")]
     public class InputTagHelper : TagHelper
@@ -12,7 +12,7 @@ namespace DBC.Helpers
 
         public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (!context.AllAttributes.ContainsKey("placeholder"))
+            if (!context.AllAttributes.ContainsName("placeholder"))
                 output.Attributes.Add("placeholder", For?.Metadata?.DisplayName);
             return Task.FromResult(0);
         }
