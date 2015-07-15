@@ -3,7 +3,7 @@
     "description": "TagHelpers",
     "authors": [ "Anderman" ],
     "tags": [ "" ],
-    "projectUrl": "https://Github.com/Anderman/TagHelpers",
+    "projectUrl": "https://Github.com/Anderman/DBC",
     "licenseUrl": "",
 
     "dependencies": {
@@ -11,7 +11,7 @@
         "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-beta5",
         "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta5",
         "Microsoft.AspNet.Mvc": "6.0.0-beta5",
-        "Microsoft.Net.Http": "2.2.22"
+        "Microsoft.Net.Http": "2.2.29"
     },
 
     "frameworks": {
