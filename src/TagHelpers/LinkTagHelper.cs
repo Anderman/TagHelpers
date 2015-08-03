@@ -21,7 +21,7 @@ namespace Anderman.TagHelpers
             RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public static readonly Regex Urls = new Regex(@"url\s*\(\s*['""]?(?<url>[^""')]+)[""']?\s*\)");
-        private readonly string preTest = @"
+        private readonly string _preTest = @"
     <meta name='x-stylesheet-fallback-test' class='{0}'>
     <SCRIPT>
         !function() {{ 
@@ -70,9 +70,9 @@ namespace Anderman.TagHelpers
                 true)
             {
                 //await context.GetChildContentAsync();
-                output.PreContent.AppendFormat(preTest, FallbackTestClass, FallbackTestProperty, "===",
+                output.PreContent.AppendFormat(_preTest, FallbackTestClass, FallbackTestProperty, "===",
                     FallbackTestValue, $"Style `{RemotePath}` already loaded. Did you create the correct test");
-                output.PostContent.AppendFormat(preTest, FallbackTestClass, FallbackTestProperty, "!==",
+                output.PostContent.AppendFormat(_preTest, FallbackTestClass, FallbackTestProperty, "!==",
                     FallbackTestValue, $"Style `{RemotePath}` still not loaded. Did you create the correct test");
             }
 

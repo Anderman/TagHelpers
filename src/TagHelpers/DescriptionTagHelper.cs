@@ -4,16 +4,22 @@ using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
-    [TargetElement("input", Attributes = "asp-for")]
-    public class InputTagHelper : TagHelper
+    [TargetElement("description", Attributes = "asp-for")]
+    public class DescriptionTagHelper : TagHelper
     {
         [HtmlAttributeName("asp-for")]
         public ModelExpression For { get; set; }
 
         public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (!context.AllAttributes.ContainsName("placeholder") && For?.Metadata.GetPrompt() != null)
-                output.Attributes.Add("placeholder", For?.Metadata.GetPrompt());
+            if (!string.IsNullOrEmpty(For?.Metadata.Description))
+            {
+                output.TagName = "SPAN";
+                output.Content.Append(For?.Metadata.Description);
+            }
+            else
+                output.TagName = "";
+
             return Task.FromResult(0);
         }
     }

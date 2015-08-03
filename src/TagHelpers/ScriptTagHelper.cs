@@ -13,8 +13,8 @@ namespace Anderman.TagHelpers
     [TargetElement("script", Attributes = "asp-copy-src-to-fallback")]
     public class ScriptTagHelper : TagHelper
     {
-        private readonly string preTest = @"<SCRIPT>({0}==null||alert('{1}'));</SCRIPT>";
-        private readonly string postTest = @"<SCRIPT>({0}!=null||alert('{1}'));</SCRIPT>";
+        private readonly string _preTest = @"<SCRIPT>({0}==null||alert('{1}'));</SCRIPT>";
+        private readonly string _postTest = @"<SCRIPT>({0}!=null||alert('{1}'));</SCRIPT>";
         [HtmlAttributeName("asp-copy-src-to-fallback")]
         public string CopySrcToFallback { get; set; }
 
@@ -44,8 +44,8 @@ namespace Anderman.TagHelpers
                 true)
             {
                 var x = await context.GetChildContentAsync();
-                output.PreElement.AppendFormat(preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test");
-                output.PostElement.AppendFormat(postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test");
+                output.PreElement.AppendFormat(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test");
+                output.PostElement.AppendFormat(_postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test");
             }
             if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) ==
                 true)
