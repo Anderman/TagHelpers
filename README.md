@@ -11,6 +11,7 @@ This repo contains TagHelper examples.
             });
             ```
     This will make `Prompt`, `Description` and `ShortDescription` available to the taghelpers
+```
   3. add the taghelper reference to your _viewstart.chtml
   ```
     @addTagHelper "*, TagHelpers"
