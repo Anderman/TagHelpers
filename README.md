@@ -2,7 +2,7 @@
 ASP.NET MVC 6 Taghelpers
 
 This repo contains TagHelper examples.
-  1. PM> Install-Package TagHelpers?
+  1. PM> Install-Package TagHelpers
   2. Not all fields of the display attribute are supported by mvc 6  so add this option to your startup class
 ```
     services.AddMvc().Configure<MvcOptions>(m =>
