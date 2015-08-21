@@ -53,7 +53,7 @@ This taghelper create valid html for material-design. Only the input tag is need
                 <input class="form-control togglebutton" asp-for="EmailConfirmed" asp-material-design="true" />
 ```
 
-To create form like this
+To create form like this ([See datatables sample site](https://github.com/Anderman/Mvc.JQuery.Datatables))
 
 ![](http://snag.gy/6IhUP.jpg)
 
