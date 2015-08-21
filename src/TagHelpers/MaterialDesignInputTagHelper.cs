@@ -56,10 +56,14 @@ namespace Anderman.TagHelpers
                 //    Auto -updates
                 //    </label>
                 //</div>
-                output.PreElement.Append(@"<div class='checkbox'>");
+                var togglebutton = false;
+                if (context.AllAttributes.ContainsName("class") && context.AllAttributes["class"].Value.ToString().Contains("togglebutton"))
+                    togglebutton = true;
+
+                output.PreElement.Append(@"<div class='" + (togglebutton ? "togglebutton" : "checkbox") + "'>");
                 output.PreElement.Append(@"<label>");
-                output.Content.SetContent(output.Content.GetContent().Replace("/><input", "/><span class=checkbox-material><span class=check></span></span><input"));
-                output.PostElement.Append(" "+displayname);
+                output.Content.SetContent(output.Content.GetContent().Replace("/><input", "/><span class='"+ (togglebutton ? "toggle" : "checkbox-material") + "'><span class=check></span></span><input"));
+                output.PostElement.Append(" " + displayname);
                 //
                 output.PostElement.Append($"<span class='text-danger field-validation-valid' data-valmsg-for='{For.Name}' data-valmsg-replace='true'></span>");
                 //

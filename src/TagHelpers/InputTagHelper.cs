@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using System.Linq;
 
 namespace Anderman.TagHelpers
 {
@@ -14,6 +15,7 @@ namespace Anderman.TagHelpers
         {
             if (!context.AllAttributes.ContainsName("placeholder") && For?.Metadata.GetPrompt() != null)
                 output.Attributes.Add("placeholder", For?.Metadata.GetPrompt());
+           
             return Task.FromResult(0);
         }
     }
