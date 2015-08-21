@@ -28,8 +28,8 @@ This repo contains TagHelper examples.
  
 ## linkTagHelper and srcTagHelper for CDN with local fallback
 If you use CDN for resources files the default taghelpers won't warn you if the configuration is wrong. For instance:
-1. The local version is different from the CDN version
-2. The Check if the CDN is loaded is wrong. It always evalute to true or false
+   1. The local version is different from the CDN version
+   2. The Check if the CDN is loaded is wrong. It always evalute to true or false
 This taghelper will save all files to local and can check if the test attribute is valid.
 
 ###Example
@@ -52,6 +52,8 @@ This taghelper create valid html for material-design. Only the input tag is need
                 <input class="form-control" asp-for="Email" asp-material-design="true" />
                 <input class="form-control togglebutton" asp-for="EmailConfirmed" asp-material-design="true" />
 ```
+
 To create form like this
+
 ![](http://snag.gy/6IhUP.jpg)
 
