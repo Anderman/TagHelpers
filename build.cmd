@@ -1,4 +1,4 @@
-@echo off
+@echo on
 cd %~dp0
 
 SETLOCAL
@@ -15,10 +15,11 @@ md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
 :restore
-IF EXIST packages\KoreBuild goto run
+IF EXIST packages\KoreBuild goto dnvm
 .nuget\NuGet.exe install KoreBuild -ExcludeVersion -o packages -nocache -pre
 .nuget\NuGet.exe install Sake -version 0.2 -o packages -ExcludeVersion
 
+:dnvm
 IF "%SKIP_DNX_INSTALL%"=="1" goto run
 CALL packages\KoreBuild\build\dnvm upgrade -runtime CLR -arch x86
 CALL packages\KoreBuild\build\dnvm install default -runtime CoreCLR -arch x86
