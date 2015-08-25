@@ -38,8 +38,8 @@ namespace TagHelpers.test
                    blah blah blah */ and this is more stuff /* blah */
                    right here stuff.";
             var result = LinkTagHelper.CommentRemove.Replace(cssContent,"");
-            Assert.DoesNotContain(result, "bla");
-            Assert.Contains(result, "stuff");
+            Assert.DoesNotContain("bla", result);
+            Assert.Contains( "stuff", result);
         }
 
     }
