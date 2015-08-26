@@ -1,3 +1,6 @@
+
+[![Build status](https://ci.appveyor.com/api/projects/status/1h3aeac8hjuiw6xi/branch/master?svg=true)](https://ci.appveyor.com/project/Anderman/taghelpers/branch/master)
+
 # TagHelpers
 ASP.NET MVC 6 Taghelpers
 
