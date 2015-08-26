@@ -1,6 +1,6 @@
-@echo on
+@echo off
 cd %~dp0
-
+SET BUILDCMD_RELEASE=beta6
 SETLOCAL
 SET CACHED_NUGET=%LocalAppData%\NuGet\NuGet.exe
 
@@ -16,14 +16,22 @@ copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
 :restore
 IF EXIST packages\KoreBuild goto dnvm
-.nuget\NuGet.exe install KoreBuild -ExcludeVersion -o packages -nocache -pre
+IF DEFINED BUILDCMD_RELEASE (
+	.nuget\NuGet.exe install KoreBuild -version 0.2.1-%BUILDCMD_RELEASE% -ExcludeVersion -o packages -nocache -pre
+) ELSE (
+	.nuget\NuGet.exe install KoreBuild -ExcludeVersion -o packages -nocache -pre
+)
 .nuget\NuGet.exe install Sake -version 0.2 -o packages -ExcludeVersion
-
+@echo on
 :dnvm
 IF "%SKIP_DNX_INSTALL%"=="1" goto run
-CALL packages\KoreBuild\build\dnvm upgrade -runtime CLR -arch x86
+IF DEFINED BUILDCMD_RELEASE (
+	CALL packages\KoreBuild\build\dnvm install 1.0.0-%BUILDCMD_RELEASE% -runtime CLR -arch x86 -a default
+) ELSE (
+	CALL packages\KoreBuild\build\dnvm upgrade -runtime CLR -arch x86 
+)
 CALL packages\KoreBuild\build\dnvm install default -runtime CoreCLR -arch x86
 
 :run
-CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86
-packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -f makefile.shade %*
+CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86	
+packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -v -f makefile.shade %*
