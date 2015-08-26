@@ -22,7 +22,7 @@ This repo contains TagHelper examples.
     @addTagHelper "*, TagHelpers"
   ```
   
-#Avaiable taghelpers
+#Available taghelpers
 ## inputTagHelper for watermark
 ###Example
 ```
