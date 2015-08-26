@@ -24,14 +24,19 @@ IF DEFINED BUILDCMD_RELEASE (
 .nuget\NuGet.exe install Sake -version 0.2 -o packages -ExcludeVersion
 @echo on
 :dnvm
-IF "%SKIP_DNX_INSTALL%"=="1" goto run
+IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-clr-win-x86.1.0.0-%BUILDCMD_RELEASE% goto coreInstall
 IF DEFINED BUILDCMD_RELEASE (
 	CALL packages\KoreBuild\build\dnvm install 1.0.0-%BUILDCMD_RELEASE% -runtime CLR -arch x86 -a default
 ) ELSE (
 	CALL packages\KoreBuild\build\dnvm upgrade -runtime CLR -arch x86 
 )
+:coreInstall
+IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-CoreCLR-win-x86.1.0.0-%BUILDCMD_RELEASE% goto use
 CALL packages\KoreBuild\build\dnvm install default -runtime CoreCLR -arch x86
 
-:run
+:use
+echo ;%PATH%; | find /C /I "dnx-clr-win-x86.1.0.0-%BUILDCMD_RELEASE%" >nul
+if %ERRORLEVEL% EQU 0 goto build
 CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86	
+:build
 packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -v -f makefile.shade %*
