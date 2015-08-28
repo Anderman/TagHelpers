@@ -76,8 +76,7 @@ namespace Anderman.TagHelpers
                     FallbackTestValue, $"Style `{RemotePath}` still not loaded. Did you create the correct test");
             }
 
-            if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) ==
-                true)
+            if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
                 try
                 {
@@ -103,11 +102,11 @@ namespace Anderman.TagHelpers
                 {
                     throw new FileNotFoundException($"The remote file:{RemotePath} cannot be found.", ex);
                 }
-                output.CopyHtmlAttribute("href", context);
             }
+            output.CopyHtmlAttribute("href", context);
         }
 
-        public  Task DownloadDependedCssFiles(string cssContent, PathHelper uriConv)
+        public Task DownloadDependedCssFiles(string cssContent, PathHelper uriConv)
         {
             var files = GetUniqueFiles(cssContent, uriConv);
             Parallel.ForEach(files, async fileInfo =>

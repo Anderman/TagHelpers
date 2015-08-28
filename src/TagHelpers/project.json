@@ -11,11 +11,13 @@
         "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-beta6",
         "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta6",
         "Microsoft.AspNet.Mvc": "6.0.0-beta6",
-        "Microsoft.Net.Http": "2.2.29"
+        "Microsoft.Net.Http": "2.2.29",
+        "Microsoft.Net.Http.Client": "1.0.0-beta6-15001"
     },
 
     "frameworks": {
-        "dnx451": { }
+        "dnx451": { },
+        "dnxcore50": { }
 
     }
 }

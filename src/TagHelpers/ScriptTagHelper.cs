@@ -73,8 +73,8 @@ namespace Anderman.TagHelpers
                 {
                     throw new FileNotFoundException($"The remote file:{RemotePath} cannot be found.", ex);
                 }
-                output.CopyHtmlAttribute("src", context);
             }
+            output.CopyHtmlAttribute("src", context);
         }
 
     }
