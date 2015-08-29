@@ -1,8 +1,9 @@
 
 @echo off
+SET BUILDCMD_RELEASE=beta6
+SET DNX_BUILD_VERSION=%BUILDCMD_RELEASE%-%APPVEYOR_BUILD_NUMBER%
 cd %~dp0
 SETLOCAL
-SET BUILDCMD_RELEASE=beta6
 SET CACHED_NUGET=%LocalAppData%\NuGet\NuGet.exe
 
 IF EXIST %CACHED_NUGET% goto copynuget
@@ -16,15 +17,18 @@ md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
 .nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
-.nuget\NuGet.exe sources 
+rem .nuget\NuGet.exe sources 
+rem .nuget\NuGet.exe
 
 :restore
-IF EXIST packages\KoreBuild goto dnvm
+IF EXIST packages\KoreBuild goto sake
 IF DEFINED BUILDCMD_RELEASE (
 	.nuget\NuGet.exe install KoreBuild -version 0.2.1-%BUILDCMD_RELEASE% -ExcludeVersion -o packages -nocache -pre
 ) ELSE (
 	.nuget\NuGet.exe install KoreBuild -ExcludeVersion -o packages -nocache -pre
 )
+:sake
+IF EXIST packages\Sake goto dnvm
 .nuget\NuGet.exe install Sake -version 0.2 -o packages -ExcludeVersion
 
 :dnvm
