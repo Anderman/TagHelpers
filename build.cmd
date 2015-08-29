@@ -15,7 +15,7 @@ IF EXIST .nuget\nuget.exe goto restore
 md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
-.nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
+rem .nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
 .nuget\NuGet.exe sources 
 
 :restore
