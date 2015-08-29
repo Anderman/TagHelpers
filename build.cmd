@@ -18,6 +18,7 @@ copy %CACHED_NUGET% .nuget\nuget.exe > nul
 .nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
 .nuget\NuGet.exe sources 
 .nuget\NuGet.exe 
+SET
 
 :restore
 SET DNX_FEED=
