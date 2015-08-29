@@ -15,10 +15,12 @@ IF EXIST .nuget\nuget.exe goto restore
 md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
-rem .nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
+.nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
 .nuget\NuGet.exe sources 
+.nuget\NuGet.exe 
 
 :restore
+SET DNX_FEED=
 IF EXIST packages\KoreBuild goto dnvm
 IF DEFINED BUILDCMD_RELEASE (
 	.nuget\NuGet.exe install KoreBuild -version 0.2.1-%BUILDCMD_RELEASE% -ExcludeVersion -o packages -nocache -pre
