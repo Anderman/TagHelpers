@@ -1,5 +1,5 @@
 
-@echo off
+@echo on
 cd %~dp0
 SETLOCAL
 SET BUILDCMD_RELEASE=beta6
