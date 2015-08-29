@@ -24,7 +24,7 @@ SET
 SET DNX_FEED=
 IF EXIST packages\KoreBuild goto dnvm
 IF DEFINED BUILDCMD_RELEASE (
-	.nuget\NuGet.exe install KoreBuild -version 0.2.1-%BUILDCMD_RELEASE% -ExcludeVersion -o packages -nocache -pre
+	.nuget\NuGet.exe install KoreBuild -version 0.2.1-%BUILDCMD_RELEASE% -ExcludeVersion -o packages -nocache -pre -Verbosity detailed
 ) ELSE (
 	.nuget\NuGet.exe install KoreBuild -ExcludeVersion -o packages -nocache -pre
 )
