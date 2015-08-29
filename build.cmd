@@ -1,6 +1,3 @@
-@echo on
-.nuget\NuGet.exe sources 
-.nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
 
 @echo off
 cd %~dp0
@@ -17,6 +14,10 @@ IF NOT EXIST %LocalAppData%\NuGet md %LocalAppData%\NuGet
 IF EXIST .nuget\nuget.exe goto restore
 md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
+
+@echo on
+.nuget\NuGet.exe sources 
+.nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
 
 :restore
 IF EXIST packages\KoreBuild goto dnvm
