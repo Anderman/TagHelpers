@@ -1,3 +1,7 @@
+@echo on
+.nuget\NuGet.exe sources 
+.nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/F/aspnetrelease/api/v2
+
 @echo off
 cd %~dp0
 SET BUILDCMD_RELEASE=beta6
