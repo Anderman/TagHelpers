@@ -21,7 +21,7 @@ copy %CACHED_NUGET% .nuget\nuget.exe > nul
 SET
 
 :restore
-SET DNX_FEED=
+SET DNX_FEED=https://www.nuget.org/api/v2
 IF EXIST packages\KoreBuild goto dnvm
 IF DEFINED BUILDCMD_RELEASE (
 	.nuget\NuGet.exe install KoreBuild -version 0.2.1-%BUILDCMD_RELEASE% -ExcludeVersion -o packages -nocache -pre -Verbosity detailed
