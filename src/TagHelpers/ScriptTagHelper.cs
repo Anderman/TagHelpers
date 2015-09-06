@@ -52,8 +52,11 @@ namespace Anderman.TagHelpers
             {
                 try
                 {
-                    RemotePath = RemotePath.StartsWith("/")
-                        ? Context.HttpContext.Request.Scheme + "://" + Context.HttpContext.Request.Host + RemotePath
+                    var scheme = Context.HttpContext.Request.Scheme;
+                    RemotePath = RemotePath.StartsWith("//")
+                        ? scheme + ":" + RemotePath
+                        : RemotePath.ToLower().StartsWith("/")
+                        ? scheme + "://" + Context.HttpContext.Request.Host + RemotePath
                         : RemotePath;
 
                     FallbackSrc = FallbackSrc ?? "/fallback/js/" + new Uri(RemotePath).Segments.Last();
