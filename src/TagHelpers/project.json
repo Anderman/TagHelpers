@@ -7,10 +7,10 @@
     "licenseUrl": "",
 
     "dependencies": {
-        "Microsoft.AspNet.Razor.Runtime": "4.0.0-beta6",
-        "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-beta6",
-        "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta6",
-        "Microsoft.AspNet.Mvc": "6.0.0-beta6",
+        "Microsoft.AspNet.Razor.Runtime": "4.0.0-beta7",
+        "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-beta7",
+        "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta7",
+        "Microsoft.AspNet.Mvc": "6.0.0-beta7",
         "Microsoft.Net.Http": "2.2.29",
         "Microsoft.Net.Http.Client": "1.0.0-beta6-15001"
     },

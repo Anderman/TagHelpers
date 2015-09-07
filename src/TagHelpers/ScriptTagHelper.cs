@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.TagHelpers;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
