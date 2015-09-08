@@ -84,8 +84,8 @@ namespace Anderman.TagHelpers
                     var scheme = Context.HttpContext.Request.Scheme;
                     RemotePath = RemotePath.StartsWith("//")
                         ? scheme + ":" + RemotePath
-                        : RemotePath.ToLower().StartsWith("/")
-                        ? scheme + "://" + Context.HttpContext.Request.Host + RemotePath
+                        : RemotePath.ToLower().StartsWith("/") || RemotePath.ToLower().StartsWith("~/")
+                        ? scheme + "://" + Context.HttpContext.Request.Host + RemotePath.Replace("~","")
                         : RemotePath;
 
 
