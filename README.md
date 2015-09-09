@@ -2,7 +2,7 @@
 
 TagHelpers
 ===
-AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/1h3aeac8hjuiw6xi/branch/master?svg=true)](https://ci.appveyor.com/project/Anderman/taghelpers/branch/master)
+AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/1h3aeac8hjuiw6xi/branch/master?svg=true)](https://ci.appveyor.com/project/Anderman/taghelpers/branch/master) ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![nuget package](https://img.shields.io/badge/nuget-beta7-yellow.svg)](https://www.nuget.org/packages/Mvc6.JQuery.Datatables)
 
 ASP.NET MVC 6 Taghelpers
 
