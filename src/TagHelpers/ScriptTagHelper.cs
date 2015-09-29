@@ -12,10 +12,12 @@ namespace Anderman.TagHelpers
 {
     [TargetElement("script", Attributes = "asp-fallback-src")]
     [TargetElement("script", Attributes = "asp-copy-src-to-fallback")]
+    [TargetElement("script", Attributes = "asp-use-minified")]
+
     public class ScriptTagHelper : TagHelper
     {
-        private readonly string _preTest = @"<SCRIPT>({0}==null||alert('{1}'));</SCRIPT>";
-        private readonly string _postTest = @"<SCRIPT>({0}!=null||alert('{1}'));</SCRIPT>";
+        private readonly string _preTest = "<script>({0}==null||alert('{1}'));</script>\n";
+        private readonly string _postTest = "\n<script>({0}!=null||alert('{1}'));</script>\n";
         [HtmlAttributeName("asp-copy-src-to-fallback")]
         public string CopySrcToFallback { get; set; }
 
@@ -30,6 +32,14 @@ namespace Anderman.TagHelpers
 
         [HtmlAttributeName("src")]
         public string RemotePath { get; set; }
+        [HtmlAttributeName("asp-use-minified")]
+        public string UseMinified { get; set; }
+
+        [HtmlAttributeName("asp-use-site-min-css")]
+        public string UseSiteMinCss { get; set; }
+
+        [HtmlAttributeName("asp-use-local")]
+        public string UseLocal { get; set; }
 
         protected internal IHostingEnvironment HostingEnvironment { get; set; }
         protected internal IHttpContextAccessor Context { get; set; }
@@ -41,15 +51,16 @@ namespace Anderman.TagHelpers
         //
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) ==
-                true)
+            bool useSiteMinJs = UseSiteMinCss?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true;
+            if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
                 var x = await context.GetChildContentAsync();
-                output.PreElement.AppendFormat(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test");
+                if (!useSiteMinJs)
+                    output.PreElement.AppendFormat(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test");
                 output.PostElement.AppendFormat(_postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test");
             }
-            if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) ==
-                true)
+            var LocalRelPath = "";
+            if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
                 try
                 {
@@ -60,8 +71,10 @@ namespace Anderman.TagHelpers
                         ? scheme + "://" + Context.HttpContext.Request.Host + RemotePath.Replace("~", "")
                         : RemotePath;
 
-                    FallbackSrc = FallbackSrc ?? "/fallback/js/" + new Uri(RemotePath).Segments.Last();
-                    var localPath = HostingEnvironment.MapPath(FallbackSrc.TrimStart('/'));
+                    LocalRelPath = (useSiteMinJs == false) ?
+                        "/js/" + new Uri(RemotePath).Segments.Last()
+                        : FallbackSrc ?? "/fallback/js/" + new Uri(RemotePath).Segments.Last();
+                    var localPath = HostingEnvironment.MapPath(LocalRelPath.TrimStart('/'));
                     var pathHelper = new PathHelper(RemotePath, localPath);
                     if (!File.Exists(localPath))
                     {
@@ -70,6 +83,17 @@ namespace Anderman.TagHelpers
                             var file = await webClient.GetStringAsync(new Uri(RemotePath));
                             Directory.CreateDirectory(pathHelper.LocalDirectory);
                             File.WriteAllText(localPath, file);
+                            if (RemotePath.Contains(".min.") && UseSiteMinCss != null)//copy full version to let gulp minify this verion to site.css
+                            {
+                                file = await webClient.GetStringAsync(new Uri(RemotePath.Replace(".min", "")));
+                                File.WriteAllText(localPath, file);
+                            }
+                            if (!RemotePath.Contains(".min.") && UseMinified != null)
+                            {
+                                file = await webClient.GetStringAsync(new Uri(RemotePath.Replace(".js", ".min.js")));
+                                File.WriteAllText(localPath, file);
+                            }
+
                         }
                     }
                 }
@@ -78,7 +102,17 @@ namespace Anderman.TagHelpers
                     throw new FileNotFoundException($"The remote file:{RemotePath} cannot be found.", ex);
                 }
             }
-            output.CopyHtmlAttribute("src", context);
+            if (context.AllAttributes.ContainsName("src"))
+            {
+                output.CopyHtmlAttribute("src", context);
+                if (UseLocal?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
+                    output.Attributes["src"].Value = LocalRelPath;
+                string href = output.Attributes["src"].Value.ToString();
+                if (UseMinified?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true && !href.Contains(".min."))
+                    output.Attributes["src"] = href.Replace(".js", ".min.js");
+                if (useSiteMinJs)
+                    output.Attributes["src"].Value = "";
+            }
         }
 
     }

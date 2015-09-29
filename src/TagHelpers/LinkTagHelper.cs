@@ -16,13 +16,15 @@ namespace Anderman.TagHelpers
     [TargetElement("link", Attributes = "asp-fallback-href")]
     [TargetElement("link", Attributes = "asp-copy-src-to-fallback")]
     [TargetElement("link", Attributes = "asp-warn-if-test-is-invalid")]
+    [TargetElement("link", Attributes = "asp-use-minified")]
+
     public class LinkTagHelper : TagHelper
     {
         public static readonly Regex CommentRemove = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)",
             RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public static readonly Regex Urls = new Regex(@"url\s*\(\s*['""]?(?<url>[^""')]+)[""']?\s*\)");
-        private readonly string _preTest = @"
+        private readonly string _preTest = "\n" + @"
     <meta name='x-stylesheet-fallback-test' class='{0}'>
     <SCRIPT>
         !function() {{ 
@@ -35,7 +37,7 @@ namespace Anderman.TagHelpers
             if (h && h['{1}'] {2} '{3}') 
                 alert('{4}'); 
         }}();
-    </SCRIPT>";
+    </SCRIPT>".Replace("\n", "").Replace("\r", "") + "\n";
 
         [HtmlAttributeName("asp-fallback-test-class")]
         public string FallbackTestClass { get; set; }
@@ -55,6 +57,15 @@ namespace Anderman.TagHelpers
         [HtmlAttributeName("asp-copy-src-to-fallback")]
         public string CopySrcToFallback { get; set; }
 
+        [HtmlAttributeName("asp-use-minified")]
+        public string UseMinified { get; set; }
+
+        [HtmlAttributeName("asp-use-site-min-css")]
+        public string UseSiteMinCss { get; set; }
+
+        [HtmlAttributeName("asp-use-local")]
+        public string UseLocal { get; set; }
+
         [HtmlAttributeName("asp-warn-if-test-is-invalid")]
         public string WarnIfTestIsInvalid { get; set; }
 
@@ -67,16 +78,16 @@ namespace Anderman.TagHelpers
         }
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) ==
-                true)
+            bool useSiteMinCss = UseSiteMinCss?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true;
+            if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
-                //await context.GetChildContentAsync();
-                output.PreContent.AppendFormat(_preTest, FallbackTestClass, FallbackTestProperty, "===",
-                    FallbackTestValue, $"Style `{RemotePath}` already loaded. Did you create the correct test");
-                output.PostContent.AppendFormat(_preTest, FallbackTestClass, FallbackTestProperty, "!==",
-                    FallbackTestValue, $"Style `{RemotePath}` still not loaded. Did you create the correct test");
+                await context.GetChildContentAsync();
+                //Anly check if not using a minified version 
+                if (!useSiteMinCss)
+                    output.PreElement.AppendFormat(_preTest, FallbackTestClass, FallbackTestProperty, "===", FallbackTestValue, $"Style `{RemotePath}` already loaded. Did you create the correct test");
+                output.PostElement.AppendFormat(_preTest, FallbackTestClass, FallbackTestProperty, "!==", FallbackTestValue, $"Style `{RemotePath}` still not loaded. Did you create the correct test");
             }
-
+            var LocalRelPath = "";
             if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
                 try
@@ -85,12 +96,13 @@ namespace Anderman.TagHelpers
                     RemotePath = RemotePath.StartsWith("//")
                         ? scheme + ":" + RemotePath
                         : RemotePath.ToLower().StartsWith("/") || RemotePath.ToLower().StartsWith("~/")
-                        ? scheme + "://" + Context.HttpContext.Request.Host + RemotePath.Replace("~","")
+                        ? scheme + "://" + Context.HttpContext.Request.Host + RemotePath.Replace("~", "")
                         : RemotePath;
 
-
-                    FallbackSrc = FallbackSrc ?? "/fallback/css/css/" + new Uri(RemotePath).Segments.Last();
-                    var localPath = HostingEnvironment.MapPath(FallbackSrc.TrimStart('/'));
+                    LocalRelPath = (useSiteMinCss == false) ?
+                        "/css/css/" + new Uri(RemotePath).Segments.Last()
+                        : FallbackSrc ?? "/fallback/css/css/" + new Uri(RemotePath).Segments.Last();
+                    var localPath = HostingEnvironment.MapPath(LocalRelPath.TrimStart('/'));
                     var pathHelper = new PathHelper(RemotePath, localPath);
                     if (!File.Exists(localPath))
                     {
@@ -100,6 +112,16 @@ namespace Anderman.TagHelpers
                             await DownloadDependedCssFiles(file, pathHelper);
                             Directory.CreateDirectory(pathHelper.LocalDirectory);
                             File.WriteAllText(localPath, file);
+                            if (RemotePath.Contains(".min.") && UseSiteMinCss != null)//copy full version to let gulp minify this verion to site.css
+                            {
+                                file = await webClient.GetStringAsync(new Uri(RemotePath.Replace(".min", "")));
+                                File.WriteAllText(localPath, file);
+                            }
+                            if (!RemotePath.Contains(".min.") && UseMinified != null)
+                            {
+                                file = await webClient.GetStringAsync(new Uri(RemotePath.Replace(".js", ".min.js")));
+                                File.WriteAllText(localPath, file);
+                            }
                         }
                     }
                 }
@@ -108,7 +130,17 @@ namespace Anderman.TagHelpers
                     throw new FileNotFoundException($"The remote file:{RemotePath} cannot be found.", ex);
                 }
             }
-            output.CopyHtmlAttribute("href", context);
+            if (context.AllAttributes.ContainsName("href"))
+            {
+                output.CopyHtmlAttribute("href", context);
+                if (UseLocal?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
+                    output.Attributes["href"].Value = LocalRelPath;
+                string href = output.Attributes["href"].Value.ToString();
+                if (UseMinified?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true && !href.Contains(".min."))
+                    output.Attributes["href"] = href.Replace(".css", ".min.css");
+                if (useSiteMinCss)
+                    output.Attributes["href"].Value = "";
+            }
         }
 
         public Task DownloadDependedCssFiles(string cssContent, PathHelper uriConv)
