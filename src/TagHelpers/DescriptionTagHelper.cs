@@ -4,7 +4,7 @@ using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
-    [TargetElement("description", Attributes = "asp-for")]
+    [HtmlTargetElement("description", Attributes = "asp-for")]
     public class DescriptionTagHelper : TagHelper
     {
         [HtmlAttributeName("asp-for")]

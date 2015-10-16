@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Anderman.TagHelpers
 {
-    [TargetElement("input", Attributes = "asp-for")]
+    [HtmlTargetElement("input", Attributes = "asp-for")]
     public class InputTagHelper : TagHelper
     {
         [HtmlAttributeName("asp-for")]

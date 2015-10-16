@@ -10,9 +10,9 @@ using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
-    [TargetElement("script", Attributes = "asp-fallback-src")]
-    [TargetElement("script", Attributes = "asp-copy-src-to-fallback")]
-    [TargetElement("script", Attributes = "asp-use-minified")]
+    [HtmlTargetElement("script", Attributes = "asp-fallback-src")]
+    [HtmlTargetElement("script", Attributes = "asp-copy-src-to-fallback")]
+    [HtmlTargetElement("script", Attributes = "asp-use-minified")]
 
     public class ScriptTagHelper : TagHelper
     {
@@ -35,8 +35,8 @@ namespace Anderman.TagHelpers
         [HtmlAttributeName("asp-use-minified")]
         public string UseMinified { get; set; }
 
-        [HtmlAttributeName("asp-use-site-min-css")]
-        public string UseSiteMinCss { get; set; }
+        [HtmlAttributeName("asp-use-site-min-js")]
+        public string UseSiteMinJs { get; set; }
 
         [HtmlAttributeName("asp-use-local")]
         public string UseLocal { get; set; }
@@ -51,7 +51,7 @@ namespace Anderman.TagHelpers
         //
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            bool useSiteMinJs = UseSiteMinCss?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true;
+            bool useSiteMinJs = UseSiteMinJs?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true;
             if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
                 var x = await context.GetChildContentAsync();
@@ -83,7 +83,7 @@ namespace Anderman.TagHelpers
                             var file = await webClient.GetStringAsync(new Uri(RemotePath));
                             Directory.CreateDirectory(pathHelper.LocalDirectory);
                             File.WriteAllText(localPath, file);
-                            if (RemotePath.Contains(".min.") && UseSiteMinCss != null)//copy full version to let gulp minify this verion to site.css
+                            if (RemotePath.Contains(".min.") && UseSiteMinJs != null)//copy full version to let gulp minify this verion to site.css
                             {
                                 file = await webClient.GetStringAsync(new Uri(RemotePath.Replace(".min", "")));
                                 File.WriteAllText(localPath, file);

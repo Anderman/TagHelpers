@@ -13,10 +13,10 @@ using static System.IO.Path;
 
 namespace Anderman.TagHelpers
 {
-    [TargetElement("link", Attributes = "asp-fallback-href")]
-    [TargetElement("link", Attributes = "asp-copy-src-to-fallback")]
-    [TargetElement("link", Attributes = "asp-warn-if-test-is-invalid")]
-    [TargetElement("link", Attributes = "asp-use-minified")]
+    [HtmlTargetElement("link", Attributes = "asp-fallback-href")]
+    [HtmlTargetElement("link", Attributes = "asp-copy-src-to-fallback")]
+    [HtmlTargetElement("link", Attributes = "asp-warn-if-test-is-invalid")]
+    [HtmlTargetElement("link", Attributes = "asp-use-minified")]
 
     public class LinkTagHelper : TagHelper
     {
