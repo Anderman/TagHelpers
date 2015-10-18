@@ -56,8 +56,8 @@ namespace Anderman.TagHelpers
             {
                 var x = await context.GetChildContentAsync();
                 if (!useSiteMinJs)
-                    output.PreElement.AppendFormat(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test");
-                output.PostElement.AppendFormat(_postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test");
+                    output.PreElement.AppendEncoded(string.Format(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test"));
+                output.PostElement.AppendEncoded(string.Format(_postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test"));
             }
             var LocalRelPath = "";
             if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)

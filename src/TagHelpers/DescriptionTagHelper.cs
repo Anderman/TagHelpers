@@ -15,7 +15,7 @@ namespace Anderman.TagHelpers
             if (!string.IsNullOrEmpty(For?.Metadata.Description))
             {
                 output.TagName = "SPAN";
-                output.Content.Append(For?.Metadata.Description);
+                output.Content.AppendEncoded(For?.Metadata.Description);
             }
             else
                 output.TagName = "";
