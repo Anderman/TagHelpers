@@ -34,7 +34,7 @@ IF EXIST packages\Sake goto dnvm
 :dnvm
 IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-clr-win-x86.1.0.0-%BUILDCMD_RELEASE% goto coreInstall
 IF DEFINED BUILDCMD_RELEASE (
-	CALL packages\KoreBuild\build\dnvm install 1.0.0-%BUILDCMD_RELEASE% -runtime CLR -arch x86 -a default
+	CALL packages\KoreBuild\build\dnvm install 1.0.0-%BUILDCMD_RELEASE% -runtime CLR -arch x86 -alias default
 ) ELSE (
 	CALL packages\KoreBuild\build\dnvm upgrade -runtime CLR -arch x86 
 )
