@@ -12,7 +12,7 @@
         "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta8",
         "Microsoft.AspNet.Mvc": "6.0.0-beta8",
         "Microsoft.Net.Http": "2.2.29",
-        "Microsoft.Net.Http.Client": "1.0.0-beta6-15001"
+        "System.Net.Http": "4.0.1-beta-23509"
     },
 
     "frameworks": {
