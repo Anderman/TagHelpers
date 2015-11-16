@@ -32,16 +32,16 @@ IF EXIST packages\Sake goto dnvm
 .nuget\NuGet.exe install Sake -version 0.2 -o packages -ExcludeVersion
 
 :dnvm
-IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-clr-win-x86.1.0.0-%BUILDCMD_RELEASE% goto coreInstall
+IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-clr-win-x86.1.0.0-xxx goto coreInstall
 IF DEFINED BUILDCMD_RELEASE (
-	CALL packages\KoreBuild\build\dnvm install 1.0.0-%BUILDCMD_RELEASE% -runtime CLR -arch x86 -alias default
+	CALL packages\KoreBuild\build\dnvm install latest -U -runtime CLR -arch x86 -alias default
 ) ELSE (
 	CALL packages\KoreBuild\build\dnvm upgrade -runtime CLR -arch x86 
 )
 
 :coreInstall
-IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-CoreCLR-win-x86.1.0.0-%BUILDCMD_RELEASE% goto use
-CALL packages\KoreBuild\build\dnvm install default -runtime CoreCLR -arch x86
+IF EXIST %USERPROFILE%\.dnx\runtimes\dnx-CoreCLR-win-x86.1.0.0-xxx goto use
+CALL packages\KoreBuild\build\dnvm install default -U -runtime CoreCLR -arch x86
 
 :use
 echo ;%PATH%; | find /C /I "dnx-clr-win-x86.1.0.0-%BUILDCMD_RELEASE%" >nul
