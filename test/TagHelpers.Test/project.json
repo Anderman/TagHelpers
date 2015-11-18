@@ -6,9 +6,9 @@
     "projectUrl": "",
     "licenseUrl": "",
     "dependencies": {
-        "Microsoft.AspNet.Testing": "1.0.0-rc1-*",
+        "Microsoft.AspNet.Testing": "1.0.0-rc1-final",
         "Moq": "4.2.1312.1622",
-        "xunit.runner.aspnet": "2.0.0-aspnet-rc1",
+        "xunit.runner.aspnet": "2.0.0-aspnet-rc1-final",
         "TagHelpers": "1.0.0-*"
     },
     "commands": {
