@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.TagHelpers;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
@@ -54,10 +54,10 @@ namespace Anderman.TagHelpers
             bool useSiteMinJs = UseSiteMinJs?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true;
             if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
-                var x = await context.GetChildContentAsync();
+                var x = await output.GetChildContentAsync();
                 if (!useSiteMinJs)
-                    output.PreElement.AppendEncoded(string.Format(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test"));
-                output.PostElement.AppendEncoded(string.Format(_postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test"));
+                    output.PreElement.AppendHtml(string.Format(_preTest, FallbackTest, $"Script `{RemotePath}` already loaded. Did you create the correct test"));
+                output.PostElement.AppendHtml(string.Format(_postTest, FallbackTest, $"Script `{RemotePath}` still not loaded. Did you create the correct test"));
             }
             var LocalRelPath = "";
             if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)

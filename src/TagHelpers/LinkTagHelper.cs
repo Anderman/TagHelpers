@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.TagHelpers;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using Microsoft.AspNet.Razor.TagHelpers;
 using static System.IO.Path;
 
 namespace Anderman.TagHelpers
@@ -81,11 +81,11 @@ namespace Anderman.TagHelpers
             bool useSiteMinCss = UseSiteMinCss?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true;
             if (WarnIfTestIsInvalid?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
             {
-                await context.GetChildContentAsync();
+                await output.GetChildContentAsync();
                 //Anly check if not using a minified version 
                 if (!useSiteMinCss)
-                    output.PreElement.AppendEncoded(string.Format(_preTest, FallbackTestClass, FallbackTestProperty, "===", FallbackTestValue, $"Style `{RemotePath}` already loaded. Did you create the correct test"));
-                output.PostElement.AppendEncoded(string.Format(_preTest, FallbackTestClass, FallbackTestProperty, "!==", FallbackTestValue, $"Style `{RemotePath}` still not loaded. Did you create the correct test"));
+                    output.PreElement.AppendHtml(string.Format(_preTest, FallbackTestClass, FallbackTestProperty, "===", FallbackTestValue, $"Style `{RemotePath}` already loaded. Did you create the correct test"));
+                output.PostElement.AppendHtml(string.Format(_preTest, FallbackTestClass, FallbackTestProperty, "!==", FallbackTestValue, $"Style `{RemotePath}` still not loaded. Did you create the correct test"));
             }
             var LocalRelPath = "";
             if (CopySrcToFallback?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)

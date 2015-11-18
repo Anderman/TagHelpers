@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
@@ -21,33 +21,33 @@ namespace Anderman.TagHelpers
             var displayname = For.Metadata.GetDisplayName();
             var placeholder = For.Metadata.GetPlaceholder();
 
-            await context.GetChildContentAsync();
+            await output.GetChildContentAsync();
             IReadOnlyTagHelperAttribute value = null;
             context.AllAttributes.TryGetAttribute("value", out value);
             if (!output.Content.GetContent().Contains("checkbox")) {
-                output.PreElement.AppendEncoded("<div class='form-control-wrapper'>");
+                output.PreElement.AppendHtml("<div class='form-control-wrapper'>");
                 if (For.Model == null && value?.Value == null)
                     if (output.Attributes.ContainsName("class"))
                         output.Attributes["class"].Value += " empty";
                     else
                         output.Attributes.Add("class", " empty");
                 var active = For.Model != null ? "class='active'" : "";
-                output.PostElement.AppendEncoded($"<div class='floating-label' for='{For.Name}' {active}>{displayname}</div>");
-                output.PostElement.AppendEncoded($"<span class='text-danger field-validation-valid' data-valmsg-for='{For.Name}' data-valmsg-replace='true'></span>");
-                output.PostElement.AppendEncoded(@"</div>");//close row and field
+                output.PostElement.AppendHtml($"<div class='floating-label' for='{For.Name}' {active}>{displayname}</div>");
+                output.PostElement.AppendHtml($"<span class='text-danger field-validation-valid' data-valmsg-for='{For.Name}' data-valmsg-replace='true'></span>");
+                output.PostElement.AppendHtml(@"</div>");//close row and field
             }
             else {
                 var togglebutton = false;
                 if (context.AllAttributes.ContainsName("class") && context.AllAttributes["class"].Value.ToString().Contains("togglebutton"))
                     togglebutton = true;
 
-                output.PreElement.AppendEncoded(@"<div class='" + (togglebutton ? "togglebutton" : "checkbox") + "'>");
-                output.PreElement.AppendEncoded(@"<label>");
-                output.Content.SetContentEncoded(output.Content.GetContent().Replace("/><input", "/><span class='" + (togglebutton ? "toggle" : "checkbox-material") + "'><span class=check></span></span><input"));
-                output.PostElement.AppendEncoded(" " + displayname);
-                output.PostElement.AppendEncoded($"<span class='text-danger field-validation-valid' data-valmsg-for='{For.Name}' data-valmsg-replace='true'></span>");
-                output.PostElement.AppendEncoded(@"</label>");
-                output.PostElement.AppendEncoded(@"</div>");
+                output.PreElement.AppendHtml(@"<div class='" + (togglebutton ? "togglebutton" : "checkbox") + "'>");
+                output.PreElement.AppendHtml(@"<label>");
+                output.Content.SetHtmlContent(output.Content.GetContent().Replace("/><input", "/><span class='" + (togglebutton ? "toggle" : "checkbox-material") + "'><span class=check></span></span><input"));
+                output.PostElement.AppendHtml(" " + displayname);
+                output.PostElement.AppendHtml($"<span class='text-danger field-validation-valid' data-valmsg-for='{For.Name}' data-valmsg-replace='true'></span>");
+                output.PostElement.AppendHtml(@"</label>");
+                output.PostElement.AppendHtml(@"</div>");
             }
             return;
         }

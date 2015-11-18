@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
@@ -15,7 +15,7 @@ namespace Anderman.TagHelpers
             if (!string.IsNullOrEmpty(For?.Metadata.Description))
             {
                 output.TagName = "SPAN";
-                output.Content.AppendEncoded(For?.Metadata.Description);
+                output.Content.AppendHtml(For?.Metadata.Description);
             }
             else
                 output.TagName = "";
