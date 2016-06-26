@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Razor.TagHelpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
@@ -31,7 +31,7 @@ namespace Anderman.TagHelpers
             //AddEmptyClassIfValueIsEmpty(context, output);
             if (!output.Content.GetContent().Contains("checkbox"))
             {
-                if (DivClass != null) output.Attributes.Remove("div-class");
+                if (DivClass != null) output.Attributes.Remove(new TagHelperAttribute("div-class"));
                 output.PreElement.AppendHtml($"\n<div class='form-group {DivClass} label-floating'>" +
                     $"\n   <label class='control-label' for='{For.Name}'>{displayname}</label>\n   ");
                 //var active = For.Model != null ? "active" : "";
@@ -44,7 +44,7 @@ namespace Anderman.TagHelpers
             else
             {
                 //<div class="checkbox"><label><input type="checkbox">name</label>
-                 var togglebutton = hasClass(context, "togglebutton");
+                 var togglebutton = HasClass(context, "togglebutton");
                 output.PreElement.AppendHtml(@"<div class='" + (togglebutton ? "togglebutton" : "checkbox") + "'>");
                 output.PreElement.AppendHtml(@"<label>");
                 output.PostElement.AppendHtml(" " + displayname);
@@ -56,15 +56,15 @@ namespace Anderman.TagHelpers
         }
         private void AddEmptyClassIfValueIsEmpty(TagHelperContext context, TagHelperOutput output)
         {
-            IReadOnlyTagHelperAttribute value = null;
+            TagHelperAttribute value;
             context.AllAttributes.TryGetAttribute("value", out value);
             if (For.Model == null && value?.Value == null)
                 if (output.Attributes.ContainsName("class"))
-                    output.Attributes["class"].Value += " empty";
+                    output.Attributes.SetAttribute("class", output.Attributes["class"]+ " empty");
                 else
                     output.Attributes.Add("class", " empty");
         }
-        private bool hasClass(TagHelperContext context, string value)
+        private static bool HasClass(TagHelperContext context, string value)
         {
             return context.AllAttributes.ContainsName("class") && context.AllAttributes["class"].Value.ToString().Contains(value);
         }

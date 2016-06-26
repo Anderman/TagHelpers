@@ -4,8 +4,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.AspNet.Mvc.ModelBinding;
-using Microsoft.AspNet.Mvc.ModelBinding.Metadata;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
 namespace Anderman.TagHelpers
 {
@@ -25,6 +25,15 @@ namespace Anderman.TagHelpers
             {
                 context.DisplayMetadata.AdditionalValues[keyname] = value;
             }
+        }
+
+        /// <summary>
+        /// Sets the values for properties of <see cref="P:Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.DisplayMetadataProviderContext.DisplayMetadata"/>. 
+        /// </summary>
+        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.DisplayMetadataProviderContext"/>.</param>
+        public void CreateDisplayMetadata(DisplayMetadataProviderContext context)
+        {
+            throw new NotImplementedException();
         }
     }
     public static class ModelMetadataExtensions

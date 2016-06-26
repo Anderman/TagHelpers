@@ -2,24 +2,15 @@
     "version": "1.0.0-*",
     "description": "TagHelpers",
     "authors": [ "Anderman" ],
-    "tags": [ "" ],
-    "projectUrl": "https://Github.com/Anderman/DBC",
-    "licenseUrl": "",
-
     "dependencies": {
-        "Microsoft.AspNet.Razor.Runtime": "4.0.0-rc1-final",
-        "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-rc1-final",
-        "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
-        "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-        "System.Net.Http": "4.0.1-beta-23516"
+        "Microsoft.AspNetCore.Razor.Runtime": "1.0.0-rc2-final",
+        "Microsoft.AspNetCore.Mvc.Abstractions": "1.0.0-rc2-final",
+        "Microsoft.AspNetCore.Mvc.TagHelpers": "1.0.0-rc2-final",
+        "Microsoft.AspNetCore.Html.Abstractions": "1.0.0-rc2-final",
+        "System.Net.Http": "4.1.0"
     },
 
     "frameworks": {
-        "dnx451": {
-            "dependencies": {
-            }
-        },
-        "dnxcore50": { }
-
+        "net451": { }
     }
 }

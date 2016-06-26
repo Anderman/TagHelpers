@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Mvc.TagHelpers;
-using Microsoft.AspNet.Razor.TagHelpers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Anderman.TagHelpers
 {
@@ -74,7 +74,7 @@ namespace Anderman.TagHelpers
                     LocalRelPath = (useSiteMinJs == false) ?
                         "/js/" + new Uri(RemotePath).Segments.Last()
                         : FallbackSrc ?? "/fallback/js/" + new Uri(RemotePath).Segments.Last();
-                    var localPath = HostingEnvironment.MapPath(LocalRelPath.TrimStart('/'));
+                    var localPath = HostingEnvironment.WebRootPath + LocalRelPath;
                     var pathHelper = new PathHelper(RemotePath, localPath);
                     if (!File.Exists(localPath))
                     {
@@ -106,12 +106,12 @@ namespace Anderman.TagHelpers
             {
                 output.CopyHtmlAttribute("src", context);
                 if (UseLocal?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
-                    output.Attributes["src"].Value = LocalRelPath;
-                string href = output.Attributes["src"].Value.ToString();
+                    output.Attributes.SetAttribute("src",LocalRelPath);
+                var href = output.Attributes["src"].Value.ToString();
                 if (UseMinified?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true && !href.Contains(".min."))
-                    output.Attributes["src"] = href.Replace(".js", ".min.js");
+                    output.Attributes.SetAttribute("src", href.Replace(".js", ".min.js"));
                 if (useSiteMinJs)
-                    output.Attributes["src"].Value = "";
+                    output.Attributes.SetAttribute("src", "");
             }
         }
 

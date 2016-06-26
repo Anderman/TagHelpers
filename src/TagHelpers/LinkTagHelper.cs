@@ -5,10 +5,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Mvc.TagHelpers;
-using Microsoft.AspNet.Razor.TagHelpers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using static System.IO.Path;
 
 namespace Anderman.TagHelpers
@@ -102,7 +102,7 @@ namespace Anderman.TagHelpers
                     LocalRelPath = (useSiteMinCss == false) ?
                         "/css/css/" + new Uri(RemotePath).Segments.Last()
                         : FallbackSrc ?? "/fallback/css/css/" + new Uri(RemotePath).Segments.Last();
-                    var localPath = HostingEnvironment.MapPath(LocalRelPath.TrimStart('/'));
+                    var localPath = HostingEnvironment.WebRootPath + LocalRelPath;
                     var pathHelper = new PathHelper(RemotePath, localPath);
                     if (!File.Exists(localPath))
                     {
@@ -134,12 +134,12 @@ namespace Anderman.TagHelpers
             {
                 output.CopyHtmlAttribute("href", context);
                 if (UseLocal?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true)
-                    output.Attributes["href"].Value = LocalRelPath;
+                    output.Attributes.SetAttribute("href",LocalRelPath);
                 string href = output.Attributes["href"].Value.ToString();
                 if (UseMinified?.Contains(HostingEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase) == true && !href.Contains(".min."))
-                    output.Attributes["href"] = href.Replace(".css", ".min.css");
+                    output.Attributes.SetAttribute("href", href.Replace(".css", ".min.css"));
                 if (useSiteMinCss)
-                    output.Attributes["href"].Value = "";
+                    output.Attributes.SetAttribute("href", "");
             }
         }
 

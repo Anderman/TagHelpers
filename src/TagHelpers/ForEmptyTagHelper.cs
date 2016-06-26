@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.AspNet.Razor.TagHelpers;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Anderman.Taghelpers
 {
@@ -12,19 +12,12 @@ namespace Anderman.Taghelpers
         /// </summary>
         //[HtmlAttributeName(ForEmptyAttributeName)]
         //public string ForEmpty { get; set; }
+        //The script is in a file so that html document is a valid xmlDocument for testing
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var guid = Guid.NewGuid();
-            output.Attributes.Add(new TagHelperAttribute("id", guid));
             output.Attributes.Add(new TagHelperAttribute("style", "display:none;"));
-            output.PostContent.AppendHtml($@"<script>
-                    var elseEl=document.getElementById('{guid}');
-                    var prev1=elseEl.previousSibling;
-                    var prev2=prev1?prev1.previousSibling:prev1;
-                    var forEl=prev1.tagName?prev1:prev2;
-                    if(!(forEl.innerHTML && forEl.innerHTML.replace(/^\s+|\s+$/g,'').length>0))
-                        elseEl.removeAttribute('style');
-                </script>");
+            var x=output.PostContent.AppendHtml("<script src='/jsnocat/forempty.min.js'></script>");
+            //var s=document.getElementsByTagName("script"),e=s[s.length-1].parentElement,p1=e.previousSibling,p2=p1?p1.previousSibling:p1,f=p1.tagName?p1:p2;f.innerHTML&&f.innerHTML.replace(/^\s+|\s+$/g,"").length>0||(e.removeAttribute("style"),f.setAttribute("style","display:none;"));
         }
     }
 }
