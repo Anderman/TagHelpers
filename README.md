@@ -2,7 +2,7 @@
 
 TagHelpers
 ===
-AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/1h3aeac8hjuiw6xi/branch/master?svg=true)](https://ci.appveyor.com/project/Anderman/taghelpers/branch/master) ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![nuget package](https://img.shields.io/badge/nuget-beta8-yellow.svg)](https://www.nuget.org/packages/Mvc6.JQuery.Datatables)
+AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/1h3aeac8hjuiw6xi/branch/master?svg=true)](https://ci.appveyor.com/project/Anderman/taghelpers/branch/master) ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![nuget package](https://img.shields.io/badge/nuget-rc2-yellow.svg)](https://www.nuget.org/packages/Mvc6.JQuery.Datatables)
 
 ASP.NET MVC 6 Taghelpers
 
@@ -50,6 +50,21 @@ This taghelper will save all files to local and can check if the test attribute 
 * `asp-copy-src-to-fallback` will copy the cdn file(s) (inclusive fonts and images) to the wwwroot/fallback directory
 * `asp-warn-if-test-is-invalid` will warn you if you used a wrong testvalue to check if CDN file is loaded
 
+##ForLoop and ForEmpty
+The ForEmpty show content when a forloop does not has content
+
+###Example
+```
+    <span asp-for-loop >
+        @foreach (var user in Model.Where(u=>u.LockoutEnd != null))
+        {
+            <div class="row"><span>@user.UserName</span><span>@user.LockoutEnd</span></div>
+        }
+    </span>
+    <div asp-for-empty>
+        No lockout users found
+    </div>
+```
 ## MaterialDesignInputTagHelper
 An input taghelper For [boottrap material-design](http://fezvrasta.github.io/bootstrap-material-design)
 This taghelper create valid html for material-design. Only the input tag is needed
