@@ -17,8 +17,9 @@ md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
 .nuget\NuGet.exe sources add -Name aspnetrelease -Source https://www.myget.org/f/aspnetmaster/api/v3/index.json
-rem .nuget\NuGet.exe sources 
-rem .nuget\NuGet.exe
+.nuget\NuGet.exe sources add -Name aspnetrelease2 -Source https://www.myget.org/F/aspnetrelease/api/v3/index.json
+.nuget\NuGet.exe sources 
+.nuget\NuGet.exe
 
 :restore
 IF EXIST packages\KoreBuild goto sake
